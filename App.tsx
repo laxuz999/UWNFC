@@ -49,7 +49,6 @@ const App: React.FC = () => {
       try {
         await fetch(GAS_ENDPOINT, {
           method: 'POST',
-          
           body: JSON.stringify(order),
         });
         setView(View.COMPLETION);
