@@ -49,7 +49,7 @@ const App: React.FC = () => {
       try {
         await fetch(GAS_ENDPOINT, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          
           body: JSON.stringify(order),
         });
         setView(View.COMPLETION);
