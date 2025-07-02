@@ -26,6 +26,9 @@ const createInitialOrder = (): Order => ({
   backDesign: createInitialDesign(),
 });
 
+// --- Google Apps Script エンドポイント ---
+const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyXPIWbW625ieZAplu67n4vHZ1tKYlvOstDGK_1X8H4wdoElz7eLaHK04Zn3yaYDk9DNQ/exec';
+
 const App: React.FC = () => {
   const [order, setOrder] = useState<Order>(createInitialOrder());
   const [view, setView] = useState<View>(View.DESIGN);
@@ -42,59 +45,21 @@ const App: React.FC = () => {
 
   const handleConfirmationSubmit = useCallback(() => {
     setIsSubmitting(true);
-    console.log("--- 注文が送信されました ---");
-
-    // 1. 管理者へのメール通知 (mailto: を使用)
-    console.log("管理者への通知メールを作成中...");
-    const emailSubject = '【新規注文】NFCカスタムオーダー';
-    const emailBody = `
-新しいNFCアイテムの注文がありました。
-
-[お客様情報]
-お名前: ${order.customer.name}
-メールアドレス: ${order.customer.email}
-ご住所: ${order.customer.address}
-
-[注文内容]
-商品タイプ: ${order.productType === ProductType.KEYCHAIN ? 'キーホルダー' : 'カード'}
-NFC書き込みURL: ${order.nfcUrl}
-
-[デザイン詳細]
-表面:
-- ソース: ${order.frontDesign.source}
-- QR色: ${order.frontDesign.qrColor}
-- テンプレートURL: ${order.frontDesign.storeDesignUrl || 'N/A'}
-- アップロードファイル: ${order.frontDesign.uploadedFileUrl ? 'あり' : 'なし'}
-
-裏面:
-- ソース: ${order.backDesign.source}
-- QR色: ${order.backDesign.qrColor}
-- テンプレートURL: ${order.backDesign.storeDesignUrl || 'N/A'}
-- アップロードファイル: ${order.backDesign.uploadedFileUrl ? 'あり' : 'なし'}
-
---------------------------------
-注文日時: ${new Date().toLocaleString('ja-JP')}
-    `;
-    const mailtoLink = `mailto:Orderas@laxuz.net?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody.trim())}`;
-    window.open(mailtoLink, '_blank');
-    
-    // 2. お客様へのメール通知 (シミュレーション)
-    console.log(`ユーザーへの確認メールを ${order.customer.email} へ送信中... (シミュレーション)`);
-
-    // 3. Googleスプレッドシートへの記録 (シミュレーション)
-    const SHEET_ID = '1OK2ANijgrpdoEMLL-mC7Yp579DSoL4ezwF8QDRhFkpA';
-    // 注: 実際のアプリケーションでは、このURLはGoogle Apps Scriptで作成したセキュアなAPIエンドポイントになります。
-    const SPREADSHEET_API_ENDPOINT = `https://example.com/api/sheets-append`; 
-    console.log("Googleスプレッドシートへのデータ送信をシミュレートしています...");
-    console.log("エンドポイント(ダミー):", SPREADSHEET_API_ENDPOINT);
-    console.log("送信データ:", JSON.stringify({ sheetId: SHEET_ID, orderData: order }, null, 2));
-    // fetch(SPREADSHEET_API_ENDPOINT, { ... })...
-
-    // ネットワークリクエストをシミュレート
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setView(View.COMPLETION);
-    }, 1500);
+    (async () => {
+      try {
+        await fetch(GAS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(order),
+        });
+        setView(View.COMPLETION);
+      } catch (err) {
+        alert('送信に失敗しました。ネットワーク接続をご確認ください。');
+        console.error(err);
+      } finally {
+        setIsSubmitting(false);
+      }
+    })();
   }, [order]);
 
   const handleReset = useCallback(() => {
