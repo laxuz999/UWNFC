@@ -1,4 +1,4 @@
-<!-- index.html  rev24 -->
+<!-- index.html  rev25 -->
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -18,8 +18,7 @@
 
       .animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
       @keyframes fadeIn {
-        from { opacity: 0; }
-        to   { opacity: 1; }
+        from { opacity: 0; } to { opacity: 1; }
       }
     </style>
 
@@ -37,46 +36,50 @@
 
     <!-- 共通 CSS／JS -->
     <link rel="stylesheet" href="/index.css" />
-    <link rel="stylesheet" href="style.css?rev24" />
-    <script src="app.js?rev24" defer></script>
+    <link rel="stylesheet" href="style.css?rev25" />
+    <script src="app.js?rev25" defer></script>
   </head>
 
   <body class="bg-gray-50">
-    <!-- ▼ 「② NFC に書き込む URL」セクション —— ③ B 面デザインの直前に配置 -->
-    <section id="nfc-url" class="container mx-auto p-4 my-4 bg-white rounded shadow">
-      <h2 class="text-xl font-semibold mb-2">② NFC に書き込む URL</h2>
-
-      <!-- URL 入力欄 -->
-      <label for="nfc-url-input" class="block mb-1">URL 入力欄</label>
-      <input
-        id="nfc-url-input"
-        type="text"
-        name="nfcUrl"
-        placeholder="https://example.com"
-        class="w-full border rounded p-2 mb-4"
-      />
-
-      <!-- 説明文 -->
-      <p class="mb-3">
-        書き込みたい <strong>URL</strong> を選び、リンク先の手順に従って URL を取得できます。
-      </p>
-
-      <!-- 取得手順へのリンク -->
-      <ul class="list-disc pl-6 space-y-2">
-        <li>
-          LINE のやり方：
-          <a href="./LINKURL.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
-        </li>
-        <li>
-          Instagram のやり方：
-          <a href="./InstagramURL.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
-        </li>
-      </ul>
-    </section>
-    <!-- ▲ ② セクションここまで ------------------------------------------- -->
-
     <!-- React アプリのマウントポイント -->
     <div id="root"></div>
+
+    <!-- ▼ スクリプト：Step2 の入力欄直下へリンク一覧を挿入 ---------------- -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // React が描画し終わるまで待ち、最長 3 秒ポーリング
+        const maxWait = 3000, interval = 150;
+        let waited = 0;
+        const timer = setInterval(() => {
+          // React 側 Step2 の URL 入力欄（placeholder で判定）
+          const inputs = document.querySelectorAll('input[placeholder="https://example.com"]');
+          if (inputs.length >= 1) {
+            clearInterval(timer);
+            const targetInput = inputs[inputs.length - 1]; // 最後＝React 側
+            // 既にリンクを挿入済みならスキップ
+            if (targetInput.parentElement.querySelector('.nfc-link-list')) return;
+
+            // UL 要素を生成
+            const ul = document.createElement('ul');
+            ul.className = 'nfc-link-list list-disc pl-6 space-y-2 text-sm mt-3';
+            ul.innerHTML = `
+              <li>LINE のやり方：
+                <a href="./LINKURL.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
+              </li>
+              <li>Instagram のやり方：
+                <a href="./InstagramURL.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
+              </li>
+            `;
+            // 入力欄の直後に挿入
+            targetInput.parentElement.appendChild(ul);
+          }
+          if ((waited += interval) > maxWait) clearInterval(timer);
+        }, interval);
+      });
+    </script>
+    <!-- ▲ スクリプトここまで ---------------------------------------------- -->
+
+    <!-- React エントリ -->
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
