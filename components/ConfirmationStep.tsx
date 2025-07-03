@@ -45,8 +45,8 @@ const ConfirmationStep: React.FC<ConfirmationStepProps> = ({ order, setOrder, on
 
                 <Preview
                     productType={order.productType}
-                    frontDesign={order.frontDesign}
-                    backDesign={order.backDesign}
+                    designA={order.designA}
+                    designB={order.designB}
                     nfcUrl={order.nfcUrl}
                     activeSide={activeSide}
                     setActiveSide={setActiveSide}

@@ -4,8 +4,8 @@ import { ProductType, DesignConfiguration, DesignSource, ActiveSide } from '../t
 
 interface PreviewProps {
   productType: ProductType;
-  frontDesign: DesignConfiguration;
-  backDesign: DesignConfiguration;
+  designA: DesignConfiguration;
+  designB: DesignConfiguration;
   nfcUrl: string;
   activeSide: ActiveSide;
   setActiveSide: React.Dispatch<React.SetStateAction<ActiveSide>>;
@@ -22,7 +22,7 @@ const DesignContent: React.FC<{ design: DesignConfiguration; nfcUrl: string; isK
         : (isKeychain ? 80 : 128);
       return (
         <div className="w-full h-full bg-white p-2 flex items-center justify-center">
-          <QRCodeSVG value={nfcUrl || 'https://example.com'} size={qrSize} fgColor={design.qrColor} />
+          <QRCodeSVG value={nfcUrl || 'https://example.com'} size={qrSize} />
         </div>
       );
     case DesignSource.STORE:
@@ -69,7 +69,7 @@ const SingleSidePreview: React.FC<{
 };
 
 
-const Preview: React.FC<PreviewProps> = ({ productType, frontDesign, backDesign, nfcUrl, activeSide, setActiveSide, isInteractive = true }) => {
+const Preview: React.FC<PreviewProps> = ({ productType, designA, designB, nfcUrl, activeSide, setActiveSide, isInteractive = true }) => {
   const [fullscreenSide, setFullscreenSide] = useState<ActiveSide | null>(null);
 
   const handlePreviewClick = (side: ActiveSide) => {
@@ -79,7 +79,7 @@ const Preview: React.FC<PreviewProps> = ({ productType, frontDesign, backDesign,
     setFullscreenSide(side);
   };
   
-  const designToShow = fullscreenSide === ActiveSide.FRONT ? frontDesign : (fullscreenSide === ActiveSide.BACK ? backDesign : null);
+  const designToShow = fullscreenSide === ActiveSide.A ? designA : (fullscreenSide === ActiveSide.B ? designB : null);
   const isKeychain = productType === ProductType.KEYCHAIN;
 
   return (
@@ -88,22 +88,22 @@ const Preview: React.FC<PreviewProps> = ({ productType, frontDesign, backDesign,
       
       <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
         <SingleSidePreview 
-          side={ActiveSide.FRONT}
-          label="表面"
-          design={frontDesign}
-          isActive={activeSide === ActiveSide.FRONT}
-          onClick={() => handlePreviewClick(ActiveSide.FRONT)}
+          side={ActiveSide.A}
+          label="A面"
+          design={designA}
+          isActive={activeSide === ActiveSide.A}
+          onClick={() => handlePreviewClick(ActiveSide.A)}
           productType={productType}
           nfcUrl={nfcUrl}
           isInteractive={isInteractive}
         />
         
         <SingleSidePreview 
-          side={ActiveSide.BACK}
-          label="裏面"
-          design={backDesign}
-          isActive={activeSide === ActiveSide.BACK}
-          onClick={() => handlePreviewClick(ActiveSide.BACK)}
+          side={ActiveSide.B}
+          label="B面"
+          design={designB}
+          isActive={activeSide === ActiveSide.B}
+          onClick={() => handlePreviewClick(ActiveSide.B)}
           productType={productType}
           nfcUrl={nfcUrl}
           isInteractive={isInteractive}

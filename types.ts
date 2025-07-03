@@ -24,8 +24,8 @@ export interface Order {
     address: string;
   };
   nfcUrl: string;
-  frontDesign: DesignConfiguration;
-  backDesign: DesignConfiguration;
+  designA: DesignConfiguration; // A面
+  designB: DesignConfiguration; // B面
 }
 
 export enum View {
@@ -35,6 +35,6 @@ export enum View {
 }
 
 export enum ActiveSide {
-  FRONT = 'front',
-  BACK = 'back',
+  A = 'A',
+  B = 'B',
 }

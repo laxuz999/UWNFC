@@ -8,7 +8,6 @@ import CompletionScreen from './components/CompletionScreen';
 // デザインの初期状態を作成するヘルパー
 const createInitialDesign = (): DesignConfiguration => ({
   source: DesignSource.BLANK,
-  qrColor: '#000000',
   storeDesignUrl: '',
   uploadedFileUrl: '',
 });
@@ -22,8 +21,8 @@ const createInitialOrder = (): Order => ({
     address: '',
   },
   nfcUrl: '',
-  frontDesign: createInitialDesign(),
-  backDesign: createInitialDesign(),
+  designA: createInitialDesign(),
+  designB: createInitialDesign(),
 });
 
 // --- Google Apps Script エンドポイント ---
@@ -32,7 +31,7 @@ const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyXPIWbW625ieZAplu
 const App: React.FC = () => {
   const [order, setOrder] = useState<Order>(createInitialOrder());
   const [view, setView] = useState<View>(View.DESIGN);
-  const [activeSide, setActiveSide] = useState<ActiveSide>(ActiveSide.FRONT);
+  const [activeSide, setActiveSide] = useState<ActiveSide>(ActiveSide.A);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleDesignSubmit = useCallback(() => {
@@ -63,7 +62,7 @@ const App: React.FC = () => {
 
   const handleReset = useCallback(() => {
     setOrder(createInitialOrder());
-    setActiveSide(ActiveSide.FRONT);
+    setActiveSide(ActiveSide.A);
     setView(View.DESIGN);
   }, []);
 

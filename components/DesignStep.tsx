@@ -146,10 +146,10 @@ const DesignStep: React.FC<DesignStepProps> = ({ order, setOrder, onNext, active
     };
     
     const setDesignForActiveSide = (design: DesignConfiguration) => {
-        if (activeSide === ActiveSide.FRONT) {
-            setOrder(prev => ({...prev, frontDesign: design}));
+        if (activeSide === ActiveSide.A) {
+            setOrder(prev => ({...prev, designA: design}));
         } else {
-            setOrder(prev => ({...prev, backDesign: design}));
+            setOrder(prev => ({...prev, designB: design}));
         }
     };
 
@@ -177,16 +177,16 @@ const DesignStep: React.FC<DesignStepProps> = ({ order, setOrder, onNext, active
                 
                 <FormSection title="デザインを選ぶ" step={3}>
                      <div className="flex border-b border-gray-200">
-                        <button type="button" onClick={() => setActiveSide(ActiveSide.FRONT)} className={`px-6 py-3 text-lg font-medium ${activeSide === ActiveSide.FRONT ? 'border-b-2 border-indigo-500 text-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}>
-                            表面のデザイン
+                        <button type="button" onClick={() => setActiveSide(ActiveSide.A)} className={`px-6 py-3 text-lg font-medium ${activeSide === ActiveSide.A ? 'border-b-2 border-indigo-500 text-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}>
+                            A面のデザイン
                         </button>
-                        <button type="button" onClick={() => setActiveSide(ActiveSide.BACK)} className={`px-6 py-3 text-lg font-medium ${activeSide === ActiveSide.BACK ? 'border-b-2 border-indigo-500 text-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}>
-                            裏面のデザイン
+                        <button type="button" onClick={() => setActiveSide(ActiveSide.B)} className={`px-6 py-3 text-lg font-medium ${activeSide === ActiveSide.B ? 'border-b-2 border-indigo-500 text-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}>
+                            B面のデザイン
                         </button>
                     </div>
                     <div className="pt-4">
                       <DesignCustomizer
-                          design={activeSide === ActiveSide.FRONT ? order.frontDesign : order.backDesign}
+                          design={activeSide === ActiveSide.A ? order.designA : order.designB}
                           setDesign={setDesignForActiveSide}
                           nfcUrl={order.nfcUrl}
                       />
@@ -195,8 +195,8 @@ const DesignStep: React.FC<DesignStepProps> = ({ order, setOrder, onNext, active
 
                  <Preview 
                     productType={order.productType}
-                    frontDesign={order.frontDesign}
-                    backDesign={order.backDesign}
+                    designA={order.designA}
+                    designB={order.designB}
                     nfcUrl={order.nfcUrl}
                     activeSide={activeSide}
                     setActiveSide={setActiveSide}
