@@ -8,7 +8,6 @@ import Preview from './Preview';
 // デザインの初期状態を作成するヘルパー
 const createInitialDesign = (): DesignConfiguration => ({
   source: DesignSource.BLANK,
-  qrColor: '#000000',
   storeDesignUrl: '',
   uploadedFileUrl: '',
 });
@@ -48,7 +47,6 @@ const DesignCustomizer: React.FC<{
                     ...createInitialDesign(), 
                     source: DesignSource.UPLOAD, 
                     uploadedFileUrl: reader.result as string,
-                    qrColor: design.qrColor, 
                 });
             };
             reader.readAsDataURL(file);
@@ -61,7 +59,6 @@ const DesignCustomizer: React.FC<{
         const newDesign = {
             ...createInitialDesign(),
             source: newSource,
-            qrColor: design.qrColor,
         };
         
         if (newSource === DesignSource.STORE) {
@@ -94,18 +91,8 @@ const DesignCustomizer: React.FC<{
             </div>
 
             {design.source === DesignSource.QR && (
-                <div className="p-4 border rounded-lg bg-gray-50 flex items-center gap-4">
-                    <QRCodeSVG value={nfcUrl || 'https://example.com'} size={64} fgColor={design.qrColor} />
-                    <div>
-                        <label htmlFor="qrColor" className="block text-sm font-medium text-gray-700">QRコードの色</label>
-                        <input
-                            id="qrColor"
-                            type="color"
-                            value={design.qrColor}
-                            onChange={(e) => setDesign({ ...design, qrColor: e.target.value })}
-                            className="mt-1 w-24 h-10 p-1 border border-gray-300 rounded-md"
-                        />
-                    </div>
+                <div className="p-4 border rounded-lg bg-gray-50 flex items-center justify-center">
+                    <QRCodeSVG value={nfcUrl || 'https://example.com'} size={64} />
                 </div>
             )}
 

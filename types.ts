@@ -12,7 +12,6 @@ export enum DesignSource {
 
 export interface DesignConfiguration {
   source: DesignSource;
-  qrColor: string;
   storeDesignUrl: string;
   uploadedFileUrl: string;
 }
