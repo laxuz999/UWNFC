@@ -1,4 +1,4 @@
-<!-- index.html  rev25 -->
+<!-- index.html  rev27 -->
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -36,8 +36,8 @@
 
     <!-- 共通 CSS／JS -->
     <link rel="stylesheet" href="/index.css" />
-    <link rel="stylesheet" href="style.css?rev25" />
-    <script src="app.js?rev25" defer></script>
+    <link rel="stylesheet" href="style.css?rev27" />
+    <script src="app.js?rev27" defer></script>
   </head>
 
   <body class="bg-gray-50">
@@ -63,13 +63,13 @@
             const ul = document.createElement('ul');
             ul.className = 'nfc-link-list list-disc pl-6 space-y-2 text-sm mt-3';
             ul.innerHTML = `
-              <li>LINE のやり方：
-                <a href="./LINKURL.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
-              </li>
-              <li>Instagram のやり方：
-                <a href="./InstagramURL.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
-              </li>
-            `;
+            <li>LINE のやり方：
+              <a href="./lineurl.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
+            </li>
+            <li>Instagram のやり方：
+              <a href="./instagramurl.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
+            </li>
+          `;
             // 入力欄の直後に挿入
             targetInput.parentElement.appendChild(ul);
           }
