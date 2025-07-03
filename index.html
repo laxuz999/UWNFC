@@ -2,48 +2,65 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NFC カスタムオーダー</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NFC キーホルダー オーダーフォーム</title>
+
+    <!-- TailwindCSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      /* カスタムスクロールバーやその他の微調整用 */
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f1f1f1;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 10px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #555;
-      }
-      /* 全画面プレビュー用アニメーション */
-      .animate-fade-in {
-        animation: fadeIn 0.3s ease-in-out;
-      }
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.1.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
-    "react/": "https://esm.sh/react@^19.1.0/",
-    "qrcode.react": "https://esm.sh/qrcode.react@^4.2.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+
+    <!-- 追加スタイルやスクリプト（必要に応じて）-->
+    <link rel="stylesheet" href="style.css?rev21" />
+    <script src="app.js?rev21" defer></script>
+  </head>
+
   <body class="bg-gray-50">
-    <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <main class="container mx-auto p-4">
+      <h1 class="text-2xl font-bold mb-6">NFC キーホルダー オーダーフォーム</h1>
+
+      <!-- ─── ① A 面デザイン（旧：表面デザイン）──────────────────── -->
+      <!-- ※ rev20 から変更なし：フォーム要素・プレビュー画像など -->
+      <!-- ここに A 面デザイン用のフォームやプレビューを配置 -->
+
+      <!-- ─── ② NFC に書き込む URL ──────────────────────────────── -->
+      <section id="nfc-url" class="my-8">
+        <h2 class="text-xl font-semibold mb-2">② NFC に書き込む URL</h2>
+        <p class="mb-4">
+          書き込みたいサービスを選び、リンク先の手順に従って URL を取得して
+          NFC チップに書き込んでください。
+        </p>
+
+        <ul class="list-disc pl-6 space-y-2">
+          <li>
+            LINE のやり方：
+            <a
+              href="LINKURL.html"
+              target="_blank"
+              rel="noopener"
+              class="text-blue-600 underline"
+              >こちら</a
+            >
+          </li>
+          <li>
+            Instagram のやり方：
+            <a
+              href="InstagramURL.html"
+              target="_blank"
+              rel="noopener"
+              class="text-blue-600 underline"
+              >こちら</a
+            >
+          </li>
+        </ul>
+      </section>
+      <!-- ─── ② セクションここまで ──────────────────────────────── -->
+
+      <!-- ─── ③ B 面デザイン（旧：裏面デザイン）──────────────────── -->
+      <!-- ※ rev20 から変更なし -->
+      <!-- ここに B 面デザイン用のフォームやプレビューを配置 -->
+
+      <!-- ─── ④ ご注文者情報 & 送信ボタン────────────────────────── -->
+      <!-- ※ rev20 から変更なし -->
+      <!-- ここに注文者情報フォームと送信ボタンを配置 -->
+    </main>
+  </body>
 </html>
