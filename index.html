@@ -1,9 +1,9 @@
-<!-- index.html rev23 -->
+<!-- index.html  rev24 -->
 <!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>NFC カスタムオーダー</title>
 
     <!-- TailwindCSS CDN -->
@@ -23,7 +23,7 @@
       }
     </style>
 
-    <!-- React などの importmap を復元 -->
+    <!-- React 用 importmap -->
     <script type="importmap">
       {
         "imports": {
@@ -35,33 +35,45 @@
       }
     </script>
 
-    <!-- グローバル CSS -->
+    <!-- 共通 CSS／JS -->
     <link rel="stylesheet" href="/index.css" />
-    <!-- 既存の style.css と app.js（他ページで利用している場合）はそのまま -->
-    <link rel="stylesheet" href="style.css?rev23" />
-    <script src="app.js?rev23" defer></script>
+    <link rel="stylesheet" href="style.css?rev24" />
+    <script src="app.js?rev24" defer></script>
   </head>
 
   <body class="bg-gray-50">
-    <!-- ▼ 固定表示：② NFC に書き込む URL セクション（React 外） -->
+    <!-- ▼ 「② NFC に書き込む URL」セクション —— ③ B 面デザインの直前に配置 -->
     <section id="nfc-url" class="container mx-auto p-4 my-4 bg-white rounded shadow">
       <h2 class="text-xl font-semibold mb-2">② NFC に書き込む URL</h2>
-      <p class="mb-4">
-        書き込みたいサービスを選び、リンク先の手順に従って URL を取得し、
-        NFC チップに書き込んでください。
+
+      <!-- URL 入力欄 -->
+      <label for="nfc-url-input" class="block mb-1">URL 入力欄</label>
+      <input
+        id="nfc-url-input"
+        type="text"
+        name="nfcUrl"
+        placeholder="https://example.com"
+        class="w-full border rounded p-2 mb-4"
+      />
+
+      <!-- 説明文 -->
+      <p class="mb-3">
+        書き込みたい <strong>URL</strong> を選び、リンク先の手順に従って URL を取得できます。
       </p>
+
+      <!-- 取得手順へのリンク -->
       <ul class="list-disc pl-6 space-y-2">
         <li>
           LINE のやり方：
-          <a href="LINKURL.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
+          <a href="./LINKURL.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
         </li>
         <li>
           Instagram のやり方：
-          <a href="InstagramURL.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
+          <a href="./InstagramURL.html" target="_blank" rel="noopener" class="text-blue-600 underline">こちら</a>
         </li>
       </ul>
     </section>
-    <!-- ▲ セクションここまで ------------------------------------------------ -->
+    <!-- ▲ ② セクションここまで ------------------------------------------- -->
 
     <!-- React アプリのマウントポイント -->
     <div id="root"></div>
