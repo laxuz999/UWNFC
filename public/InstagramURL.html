@@ -1,4 +1,4 @@
-<!-- instagramurl.html  rev4 -->
+<!-- instagramurl.html  rev5 -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -14,11 +14,21 @@
     h1{ font-size:2rem; margin-bottom:1.5rem; }
     h2{ font-size:1.5rem; margin:1.5rem 0 0.5rem; color:#d6336c; }
     ul{ list-style-type:disc; margin-left:1.5rem; }
+    /* ▼ 画像サイズを最大 320px に制限し中央寄せ */
     img{
-      max-width:100%; height:auto;
-      border:1px solid #ccc; border-radius:8px; margin-top:0.5rem;
+      display:block;
+      max-width:320px;   /* ← ここを調整 */
+      width:100%;
+      height:auto;
+      margin:0.5rem auto;
+      border:1px solid #ccc;
+      border-radius:8px;
     }
-    .note{ background:#fff9c4; padding:1rem; border-left:5px solid #ffeb3b; }
+    .note{
+      background:#fff9c4;
+      padding:1rem;
+      border-left:5px solid #ffeb3b;
+    }
   </style>
 </head>
 <body>
@@ -43,7 +53,7 @@
     <img src="./img/insta_step2.png" alt="プロフィールをシェアボタン">
   </section>
 
-  <!-- STEP 3 (リンクをコピー) -->
+  <!-- STEP 3 -->
   <section>
     <h2>STEP&nbsp;3&nbsp;リンクをコピー</h2>
     <ul>
@@ -53,7 +63,7 @@
     <img src="./img/insta_step3.png" alt="リンクをコピーする操作">
   </section>
 
-  <!-- STEP 4 (リンクを共有) -->
+  <!-- STEP 4 -->
   <section>
     <h2>STEP&nbsp;4&nbsp;リンクを共有</h2>
     <ul>
@@ -62,7 +72,6 @@
     <img src="./img/insta_step4.png" alt="リンクを共有する">
   </section>
 
-  <!-- 補足 -->
   <section class="note">
     <h2>補足・注意点</h2>
     <ul>
