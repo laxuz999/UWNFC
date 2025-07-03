@@ -1,4 +1,4 @@
-<!-- index.html  rev28 -->
+<!-- index.html  rev29 -->
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -84,24 +84,26 @@
 
     <!-- ▼ debug-upload.js: アップロード診断用スニペット（後で削除可） -->
     <script>
-      /* ① ファイル選択直後の状態を確認 */
-      document.querySelector('input[type="file"]')
-        ?.addEventListener('change', e => {
-          const file = e.target.files[0];
-          if (!file) return;
+      /* ① ファイル選択直後の状態を確認（動的に挿入される <input type="file"> にも対応） */
+      document.addEventListener('change', e => {
+        const input = e.target;
+        if (!(input && input.type === 'file')) return;
 
-          console.group('[UPLOAD DEBUG] ファイル選択');
-          console.table({
-            name: file.name,
-            size: file.size + ' byte',
-            type: file.type
-          });
+        const file = input.files[0];
+        if (!file) return;
 
-          const r = new FileReader();
-          r.onload = ev => console.log('base64 head:', ev.target.result.slice(0, 60) + ' …');
-          r.readAsDataURL(file);
-          console.groupEnd();
+        console.group('[UPLOAD DEBUG] ファイル選択');
+        console.table({
+          name: file.name,
+          size: file.size + ' byte',
+          type: file.type
         });
+
+        const r = new FileReader();
+        r.onload = ev => console.log('base64 head:', ev.target.result.slice(0, 60) + ' …');
+        r.readAsDataURL(file);
+        console.groupEnd();
+      });
 
       /* ② fetch をフックして通信内容を監視 */
       const _fetch = window.fetch;
