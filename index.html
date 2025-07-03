@@ -1,4 +1,3 @@
-<!-- index.html  rev27 -->
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -81,5 +80,42 @@
 
     <!-- React エントリ -->
     <script type="module" src="/index.tsx"></script>
+
+    <!-- ▼ debug-upload.js: アップロード診断用スニペット（後で削除可） -->
+    <script>
+      /* ① ファイル選択直後の状態を確認 */
+      document.querySelector('#fileInput')
+        ?.addEventListener('change', e => {
+          const file = e.target.files[0];
+          if (!file) return;
+
+          console.group('[UPLOAD DEBUG] ファイル選択');
+          console.table({
+            name: file.name,
+            size: file.size + ' byte',
+            type: file.type
+          });
+
+          const r = new FileReader();
+          r.onload = ev => console.log('base64 head:', ev.target.result.slice(0, 60) + ' …');
+          r.readAsDataURL(file);
+          console.groupEnd();
+        });
+
+      /* ② fetch をフックして通信内容を監視 */
+      const _fetch = window.fetch;
+      window.fetch = async (...args) => {
+        const [resource, init] = args;
+        if (init && init.method === 'POST') {
+          console.group('[UPLOAD DEBUG] fetch 監視');
+          console.log('→ URL', resource);
+          console.log('→ Content-Type', init.headers && init.headers['Content-Type']);
+          console.log('→ body は FormData?', init.body instanceof FormData);
+          console.groupEnd();
+        }
+        return _fetch(...args);
+      };
+    </script>
+    <!-- ▲ debug-upload.js ここまで -->
   </body>
 </html>
