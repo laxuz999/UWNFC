@@ -1,0 +1,4 @@
+/* index.css  – Tailwind のおまじない 3 行だけ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
