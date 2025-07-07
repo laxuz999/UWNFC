@@ -1,16 +1,16 @@
 /* -----------------------------------------------------------------
- *  App.tsx  rev2  (2025-07-04)
- *    – order / selectedFile を useState で保持
- *    – ConfirmationStep に onSubmit={handleConfirmationSubmit}
- *    – handleConfirmationSubmit: FormData 送信　テスト
+ *  App.tsx  rev23  (2025‑07‑07)
+ *    – 3 ステップ UI (Design → Confirm → Done)
+ *    – Google Apps Script へ FormData 送信
  * ----------------------------------------------------------------*/
 import React, { useState, useCallback } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ConfirmationStep from './components/ConfirmationStep';
+
 import DesignStep from './components/DesignStep';
+import ConfirmationStep from './components/ConfirmationStep';
 import CompletionScreen from './components/CompletionScreen';
 
-/* ------- 型定義 ---------------------------------------------- */
+/* ---------- 型定義 ---------- */
 interface Customer {
   name: string;
   email: string;
@@ -31,7 +31,7 @@ interface Order {
   designB: Design;
 }
 
-/* ------- 初期値（null 防止用） ------------------------------- */
+/* ---------- 初期値 ---------- */
 const initialOrder: Order = {
   productType: 'keychain',
   customer: { name: '', email: '', address: '' },
@@ -40,21 +40,21 @@ const initialOrder: Order = {
   designB: { source: 'blank', qrColor: '#000000' }
 };
 
-/* ------- Google Apps Script エンドポイント ------------------- */
+/* ---------- GAS エンドポイント ---------- */
 const GAS_ENDPOINT =
   import.meta.env.VITE_GAS_URL ??
-  'https://script.google.com/macros/s/AKfycbwZ29OH9qVP-41TEVO9mFZyhHK5qRjqM0O9t8aMeWx05xtqtOctF9Az0JSI-M4SiFjzrQ/exec';
+  'https://script.google.com/macros/s/XXXXXXXXXXXXXXXXXXXXXXXX/exec';
 
-/* ------- メインコンポーネント -------------------------------- */
-function App() {
-  const [order, setOrder]             = useState<Order>(initialOrder);
+/* ---------- App 本体 ---------- */
+export default function App() {
+  const [order, setOrder] = useState<Order>(initialOrder);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /* デザインステップで画像が選択されたとき */
+  /* 画像が選択されたとき */
   const handleFileSelect = (file: File) => setSelectedFile(file);
 
-  /* 注文確定時に呼ばれる送信ハンドラ */
+  /* 注文確定時 */
   const handleConfirmationSubmit = useCallback(async () => {
     if (!selectedFile) { alert('デザイン画像を選択してください'); return; }
 
@@ -67,18 +67,18 @@ function App() {
 
       const res  = await fetch(GAS_ENDPOINT, { method: 'POST', body: fd });
       const json = await res.json();
-      console.log(json);
+      console.log('[dbg]', json);
 
       window.location.hash = '#/done';
     } catch (err) {
       console.error(err);
-      alert('送信に失敗しました。ネットワークをご確認ください');
+      alert('送信に失敗しました');
     } finally {
       setIsSubmitting(false);
     }
   }, [order, selectedFile]);
 
-  /* ルーター定義 */
+  /* ルーティング */
   const router = createBrowserRouter([
     {
       path: '/',
@@ -88,7 +88,7 @@ function App() {
           setOrder={setOrder}
           onFileSelect={handleFileSelect}
         />
-      ),
+      )
     },
     {
       path: '/confirm',
@@ -98,12 +98,10 @@ function App() {
           onSubmit={handleConfirmationSubmit}
           isSubmitting={isSubmitting}
         />
-      ),
+      )
     },
-    { path: '/done', element: <CompletionScreen /> },
+    { path: '/done', element: <CompletionScreen /> }
   ]);
 
   return <RouterProvider router={router} />;
 }
-
-export default App;
