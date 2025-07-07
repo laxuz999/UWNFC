@@ -1,4 +1,5 @@
 import React from 'react';
+import QRCode from 'qrcode.react';
 import { ActiveSide } from '../types';
 
 interface PreviewProps {
@@ -27,17 +28,24 @@ const Preview: React.FC<PreviewProps> = ({ productType, designA, designB, nfcUrl
         </button>
       </div>
       <div className="preview-content">
-        {/* Render the preview based on currentDesign */}
-        {/* This is a placeholder, actual rendering logic should be here */}
-        <p>Product Type: {productType}</p>
-        <p>Active Side: {activeSide === ActiveSide.A ? 'A' : 'B'}</p>
-        <p>NFC URL: {nfcUrl}</p>
-        <div>
-          {/* Assuming design has some image or content */}
-          {currentDesign && currentDesign.source && (
-            <p>Design Source: {currentDesign.source}</p>
-          )}
-        </div>
+        {/* -------- プレビュー描画 -------- */}
+        {currentDesign.source === 'blank' && (
+          <div style={{ width: 220, height: 220, border: '1px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ color: '#888' }}>白紙</span>
+          </div>
+        )}
+
+        {currentDesign.source === 'qr' && (
+          <QRCode value={nfcUrl || ''} size={220} fgColor={currentDesign.qrColor || '#000'} />
+        )}
+
+        {(currentDesign.source === 'store' || currentDesign.source === 'upload') && (
+          <img
+            src={currentDesign.uploadedFileUrl || currentDesign.storeDesignUrl || ''}
+            alt="Design preview"
+            style={{ width: 220, height: 220, objectFit: 'contain', border: '1px solid #eee' }}
+          />
+        )}
       </div>
     </div>
   );
