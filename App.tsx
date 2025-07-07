@@ -2,7 +2,7 @@
  *  App.tsx  rev2  (2025-07-04)
  *    – order / selectedFile を useState で保持
  *    – ConfirmationStep に onSubmit={handleConfirmationSubmit}
- *    – handleConfirmationSubmit: FormData 送信
+ *    – handleConfirmationSubmit: FormData 送信　テスト
  * ----------------------------------------------------------------*/
 import React, { useState, useCallback } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
