@@ -40,3 +40,10 @@ const handleConfirmationSubmit = useCallback(() => {
   })();
 }, [order]);
 // ----------------------------------------------------------
+function App() {
+  /* 既存の状態／画面切替ロジックがあればそのまま */
+  return <RouterProvider router={router} />;
+}
+
+export default App;
+/* --- ここまで追加 --- */
