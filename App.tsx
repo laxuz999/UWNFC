@@ -8,7 +8,7 @@ import React, { useState, useCallback } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ConfirmationStep from './components/ConfirmationStep';
 import DesignStep from './components/DesignStep';
-import CompletionStep from './components/CompletionStep';
+import CompletionScreen from './components/CompletionScreen';
 
 /* ------- 型定義 ---------------------------------------------- */
 interface Customer {
@@ -92,7 +92,7 @@ function App() {
         />
       ),
     },
-    { path: '/done', element: <CompletionStep /> },
+    { path: '/done', element: <CompletionScreen /> },
   ]);
 
   return <RouterProvider router={router} />;
