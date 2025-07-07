@@ -9,12 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "qrcode.react": "^4.2.0"
+    "react-router-dom": "^6.23.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@types/react-router-dom": "^6.4.5",
     "typescript": "~5.7.2",
     "vite": "^6.2.0"
   }
