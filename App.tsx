@@ -31,6 +31,15 @@ interface Order {
   designB: Design;
 }
 
+/* ------- 初期値（null 防止用） ------------------------------- */
+const initialOrder: Order = {
+  productType: 'keychain',
+  customer: { name: '', email: '', address: '' },
+  nfcUrl: '',
+  designA: { source: 'blank', qrColor: '#000000' },
+  designB: { source: 'blank', qrColor: '#000000' }
+};
+
 /* ------- Google Apps Script エンドポイント ------------------- */
 const GAS_ENDPOINT =
   import.meta.env.VITE_GAS_URL ??
@@ -38,7 +47,7 @@ const GAS_ENDPOINT =
 
 /* ------- メインコンポーネント -------------------------------- */
 function App() {
-  const [order, setOrder]             = useState<Order | null>(null);
+  const [order, setOrder]             = useState<Order>(initialOrder);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -47,7 +56,6 @@ function App() {
 
   /* 注文確定時に呼ばれる送信ハンドラ */
   const handleConfirmationSubmit = useCallback(async () => {
-    if (!order) { alert('注文データがありません'); return; }
     if (!selectedFile) { alert('デザイン画像を選択してください'); return; }
 
     try {
