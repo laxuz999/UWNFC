@@ -24,31 +24,85 @@ const Preview: React.FC<PreviewProps> = ({ productType, designA, designB, nfcUrl
   };
 
   return (
-    <div className="preview-container">
-      <div className="preview-header">
-        <button onClick={handleToggleSide} disabled={!isInteractive}>
-          {activeSide === ActiveSide.A ? 'A面を表示' : 'B面を表示'}
-        </button>
-      </div>
-      <div className="preview-content">
-        {/* -------- プレビュー描画 -------- */}
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: 24,
+      }}
+    >
+      {/* トグルボタン */}
+      <button
+        onClick={handleToggleSide}
+        disabled={!isInteractive}
+        style={{
+          marginBottom: 16,
+          padding: '6px 14px',
+          borderRadius: 4,
+          background: '#3b82f6',
+          color: '#fff',
+          border: 'none',
+          cursor: isInteractive ? 'pointer' : 'default',
+          opacity: isInteractive ? 1 : 0.5,
+        }}
+      >
+        {activeSide === ActiveSide.A ? 'B面を表示' : 'A面を表示'}
+      </button>
+
+      {/* プレビューカード */}
+      <div
+        style={{
+          width: 260,
+          height: 260,
+          border: '1px solid #d1d5db',
+          borderRadius: 12,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          background: '#fff',
+        }}
+      >
+        {/* 中身 */}
         {currentDesign?.source === 'blank' && (
-          <div style={{ width: 220, height: 220, border: '1px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ color: '#888' }}>白紙</span>
-          </div>
+          <span style={{ color: '#6b7280', fontSize: 18 }}>白紙</span>
         )}
 
         {currentDesign?.source === 'qr' && (
-          <QRCode value={nfcUrl || ''} size={220} fgColor={currentDesign.qrColor || '#000'} />
-        )}
-
-        {(currentDesign?.source === 'store' || currentDesign?.source === 'upload') && (
-          <img
-            src={currentDesign.uploadedFileUrl || currentDesign.storeDesignUrl || ''}
-            alt="Design preview"
-            style={{ width: 220, height: 220, objectFit: 'contain', border: '1px solid #eee' }}
+          <QRCode
+            value={nfcUrl || ''}
+            size={200}
+            fgColor={currentDesign.qrColor || '#000'}
           />
         )}
+
+        {(currentDesign?.source === 'store' ||
+          currentDesign?.source === 'upload') && (
+          <img
+            src={
+              currentDesign.uploadedFileUrl || currentDesign.storeDesignUrl || ''
+            }
+            alt="Design preview"
+            style={{ width: 240, height: 240, objectFit: 'contain' }}
+          />
+        )}
+
+        {/* ラベル */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 6,
+            right: 10,
+            fontSize: 12,
+            color: '#6b7280',
+          }}
+        >
+          {activeSide === ActiveSide.A ? 'A面' : 'B面'}
+        </div>
       </div>
     </div>
   );
