@@ -43,7 +43,7 @@ const initialOrder: Order = {
 /* ------- Google Apps Script エンドポイント ------------------- */
 const GAS_ENDPOINT =
   import.meta.env.VITE_GAS_URL ??
-  'https://script.google.com/macros/s/AKfycbyXPIWbW625ieZAplu67n4vHZ1tKYlvOstDGK_1X8H4wdoElz7eLaHK04Zn3yaYDk9DNQ/exec';
+  'https://script.google.com/macros/s/AKfycbwZ29OH9qVP-41TEVO9mFZyhHK5qRjqM0O9t8aMeWx05xtqtOctF9Az0JSI-M4SiFjzrQ/exec';
 
 /* ------- メインコンポーネント -------------------------------- */
 function App() {
