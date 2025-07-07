@@ -1,3 +1,4 @@
+import React, { useCallback } from 'react';
 // --- Google Apps Script エンドポイント ---
 const GAS_ENDPOINT =
   'https://script.google.com/macros/s/AKfycbyXPIWbW625ieZAplu67n4vHZ1tKYlvOstDGK_1X8H4wdoElz7eLaHK04Zn3yaYDk9DNQ/exec';
