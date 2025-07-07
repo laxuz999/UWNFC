@@ -1,50 +1,101 @@
-import React, { useCallback } from 'react';
-// --- Google Apps Script エンドポイント ---
+/* -----------------------------------------------------------------
+ *  App.tsx  rev2  (2025-07-04)
+ *    – order / selectedFile を useState で保持
+ *    – ConfirmationStep に onSubmit={handleConfirmationSubmit}
+ *    – handleConfirmationSubmit: FormData 送信
+ * ----------------------------------------------------------------*/
+import React, { useState, useCallback } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ConfirmationStep from './components/ConfirmationStep';
+import DesignStep from './components/DesignStep';
+import CompletionStep from './components/CompletionStep';
+
+/* ------- 型定義 ---------------------------------------------- */
+interface Customer {
+  name: string;
+  email: string;
+  address: string;
+}
+interface Design {
+  source: 'blank' | 'qr' | 'store' | 'upload';
+  qrColor: string;
+  storeDesignUrl?: string;
+  uploadedFile?: File;
+  uploadedFileUrl?: string;
+}
+interface Order {
+  productType: 'keychain' | 'card';
+  customer: Customer;
+  nfcUrl: string;
+  designA: Design;
+  designB: Design;
+}
+
+/* ------- Google Apps Script エンドポイント ------------------- */
 const GAS_ENDPOINT =
+  import.meta.env.VITE_GAS_URL ??
   'https://script.google.com/macros/s/AKfycbyXPIWbW625ieZAplu67n4vHZ1tKYlvOstDGK_1X8H4wdoElz7eLaHK04Zn3yaYDk9DNQ/exec';
 
-// rev1 ここを FormData 送信に変更 --------------------------
-const handleConfirmationSubmit = useCallback(() => {
-  setIsSubmitting(true);
-  (async () => {
+/* ------- メインコンポーネント -------------------------------- */
+function App() {
+  const [order, setOrder]             = useState<Order | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  /* デザインステップで画像が選択されたとき */
+  const handleFileSelect = (file: File) => setSelectedFile(file);
+
+  /* 注文確定時に呼ばれる送信ハンドラ */
+  const handleConfirmationSubmit = useCallback(async () => {
+    if (!order) { alert('注文データがありません'); return; }
+    if (!selectedFile) { alert('デザイン画像を選択してください'); return; }
+
     try {
-      /* --- FormData を組み立てる --- */
+      setIsSubmitting(true);
+
       const fd = new FormData();
-
-      // 画像ファイル：designA → designB の順で優先して 1 枚だけ入れる
-      const fileA = (order.designA as any).uploadedFile;
-      const fileB = (order.designB as any).uploadedFile;
-      if (fileA instanceof File) {
-        fd.append('file', fileA);            // field 名は「file」
-      } else if (fileB instanceof File) {
-        fd.append('file', fileB);
-      }
-
-      // 注文データ本体
+      fd.append('file', selectedFile);
       fd.append('payload', JSON.stringify(order));
 
-      /* --- fetch 送信（ヘッダーは書かない！） --- */
-      const res = await fetch(GAS_ENDPOINT, {
-        method: 'POST',
-        body: fd,
-      });
+      const res  = await fetch(GAS_ENDPOINT, { method: 'POST', body: fd });
       const json = await res.json();
       console.log(json);
 
-      setView(View.COMPLETION);
+      window.location.hash = '#/done';
     } catch (err) {
-      alert('送信に失敗しました。ネットワーク接続をご確認ください。');
       console.error(err);
+      alert('送信に失敗しました。ネットワークをご確認ください');
     } finally {
       setIsSubmitting(false);
     }
-  })();
-}, [order]);
-// ----------------------------------------------------------
-function App() {
-  /* 既存の状態／画面切替ロジックがあればそのまま */
+  }, [order, selectedFile]);
+
+  /* ルーター定義 */
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: (
+        <DesignStep
+          order={order}
+          setOrder={setOrder}
+          onFileSelect={handleFileSelect}
+        />
+      ),
+    },
+    {
+      path: '/confirm',
+      element: (
+        <ConfirmationStep
+          order={order}
+          onSubmit={handleConfirmationSubmit}
+          isSubmitting={isSubmitting}
+        />
+      ),
+    },
+    { path: '/done', element: <CompletionStep /> },
+  ]);
+
   return <RouterProvider router={router} />;
 }
 
 export default App;
-/* --- ここまで追加 --- */
